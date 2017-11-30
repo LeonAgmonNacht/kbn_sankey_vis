@@ -1,22 +1,23 @@
 # Kibana Sankey Diagram Plugin
 
-This is a sankey diagram visType plugin for Kibana 5.5+.
+This is a sankey diagram visType plugin for Kibana 5.5.0+.
 
 This plugin was developped from <https://github.com/elastic/kibana/pull/4832>.
 
 Here is an example:
 
-![Sankey](sankey_5_5_Screenshot1.PNG)
+![Sankey](Capture1.PNG)
 
 # Install
 
 ```
-git clone https://github.com/JuanCarniglia/kbn_sankey_vis.git
-cd kbn_sankey_vis/releases/5.5
+git clone https://github.com/LeonAgmonNacht/kbn_sankey_vis
+cd kbn_sankey_vis
 npm install d3-sankey-plugin
 npm run build
-cp -R build/kbn_sankey_vis KIBANA_FOLDER_PATH/installedPlugins/
+cp -R build/kbn_sankey_vis KIBANA_FOLDER_PATH/src/core_plugins
 ```
+** Note that if your kibana version is not 5.5.0, you need to change it in package.json
 
 ** Note that in NTFS file systems, file paths that exceed 260 characters will fail with cp, you have to use ROBOCOPY:
 

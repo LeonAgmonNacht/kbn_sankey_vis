@@ -5,14 +5,16 @@
   import 'plugins/kbn_sankey_vis/kbn_sankey_vis.less';
   import 'plugins/kbn_sankey_vis/kbn_sankey_vis_controller';
 
-  import TemplateVisTypeTemplateVisTypeProvider from 'ui/template_vis_type/template_vis_type';
-  import VisSchemasProvider from 'ui/vis/schemas';
+  import { TemplateVisTypeProvider } from 'ui/template_vis_type/template_vis_type';
+  import { VisSchemasProvider } from 'ui/vis/schemas';
   import kbnSankeyVisTemplate from 'plugins/kbn_sankey_vis/kbn_sankey_vis.html';
 
-  require('ui/registry/vis_types').register(KbnSankeyVisProvider);
+  import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
+
+  VisTypesRegistryProvider.register(KbnSankeyVisProvider);
 
   function KbnSankeyVisProvider(Private) {
-    let TemplateVisType = Private(TemplateVisTypeTemplateVisTypeProvider);
+    let TemplateVisType = Private(TemplateVisTypeProvider);
     let Schemas = Private(VisSchemasProvider);
 
     return new TemplateVisType({
@@ -51,3 +53,6 @@
       requiresSearch: true
     });
   }
+
+// export the provider so that the visType can be required with Private()
+export default KbnSankeyVisProvider;

@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import arrayToLinkedList from 'ui/agg_response/hierarchical/_array_to_linked_list';
+
+import { arrayToLinkedList } from 'ui/agg_response/hierarchical/_array_to_linked_list';
 
 module.exports = function sankeyProvider(Private, Notifier) {
 
@@ -33,49 +34,54 @@ module.exports = function sankeyProvider(Private, Notifier) {
 
   return function (vis, resp) {
 
+    let chart = {};
+
     let metric = vis.aggs.bySchemaGroup.metrics[0];
-    let buckets = vis.aggs.bySchemaGroup.buckets;
-    buckets = arrayToLinkedList(buckets);
-    if (!buckets) {
-      return {
-        'slices': {
-          'nodes': [],
-          'links': []
+    if (vis.aggs && vis.aggs.bySchemaGroup.buckets && vis.aggs.bySchemaGroup.buckets.length > 0) {
+      let buckets = vis.aggs.bySchemaGroup.buckets;
+      buckets = arrayToLinkedList(buckets);
+
+      if (!buckets) {
+        return {
+          'slices': {
+            'nodes': [],
+            'links': []
+          }
+        };
+      } else {
+        let firstAgg = buckets[0];
+        let aggData = resp.aggregations[firstAgg.id];
+
+        if (!firstAgg._next) {
+          notify.error('need more than one sub aggs');
         }
-      };
-    }
 
-    let firstAgg = buckets[0];
-    let aggData = resp.aggregations[firstAgg.id];
+        nodes = {};
+        links = {};
+        lastNode = -1;
 
-    if (!firstAgg._next) {
-      notify.error('need more than one sub aggs');
-    }
+        processEntry(firstAgg, metric, aggData, -1);
 
-    nodes = {};
-    links = {};
-    lastNode = -1;
-
-    processEntry(firstAgg, metric, aggData, -1);
-
-    let invertNodes = _.invert(nodes);
-    let chart = {
-      'slices': {
-        'nodes': _.map(_.keys(invertNodes), function (k) {
-          return {
-            'name': invertNodes[k]
-          };
-        }),
-        'links': _.map(_.keys(links), function (k) {
-          let s = k.split('sankeysplitchar');
-          return {
-            'source': parseInt(s[0]),
-            'target': parseInt(s[1]),
-            'value': links[k]
-          };
-        })
+        let invertNodes = _.invert(nodes);
+        chart = {
+          'slices': {
+            'nodes': _.map(_.keys(invertNodes), function (k) {
+              return {
+                'name': invertNodes[k]
+              };
+            }),
+            'links': _.map(_.keys(links), function (k) {
+              let s = k.split('sankeysplitchar');
+              return {
+                'source': parseInt(s[0]),
+                'target': parseInt(s[1]),
+                'value': links[k]
+              };
+            })
+          }
+        };
       }
-    };
+    }
 
     return chart;
   };
