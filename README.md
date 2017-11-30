@@ -14,7 +14,7 @@ Here is an example:
 git clone https://github.com/LeonAgmonNacht/kbn_sankey_vis
 cd kbn_sankey_vis
 npm install d3-sankey-plugin
-npm run build
+npm run build (no gulp file at this moment, this command should fail)
 cp -R build/kbn_sankey_vis KIBANA_FOLDER_PATH/src/core_plugins
 ```
 ** Note that if your kibana version is not 5.5.0, you need to change it in package.json
@@ -22,7 +22,7 @@ cp -R build/kbn_sankey_vis KIBANA_FOLDER_PATH/src/core_plugins
 ** Note that in NTFS file systems, file paths that exceed 260 characters will fail with cp, you have to use ROBOCOPY:
 
 ```
-robocopy /S build/kbn_sankey_vis KIBANA_FOLDER_PATH/installedPlugins/kbn_sankey_vis
+robocopy /S kbn_sankey_vis KIBANA_FOLDER_PATH/installedPlugins/kbn_sankey_vis
 ```
 
 ** Also note that if npm run build fails, with a rsync.js error, it is likelly that you don't have RSYNC.EXE installed
