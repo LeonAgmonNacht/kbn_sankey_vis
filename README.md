@@ -14,8 +14,7 @@ Here is an example:
 git clone https://github.com/LeonAgmonNacht/kbn_sankey_vis
 cd kbn_sankey_vis
 npm install d3-sankey-plugin
-npm run build (no gulp file at this moment, this command should fail)
-cp -R build/kbn_sankey_vis KIBANA_FOLDER_PATH/src/core_plugins
+cp -R kbn_sankey_vis KIBANA_FOLDER_PATH/src/core_plugins
 ```
 ** Note that if your kibana version is not 5.5.0, you need to change it in package.json
 
@@ -37,5 +36,7 @@ set PATH=%PATH%;{rsync installation directory}\bin
 # Uninstall
 
 ```
-bin/kibana plugin  --remove kbn_sankey_vis
+rm kbn_sankey_vis in src/core_plugins
+rm kibana.bundle.js in optimize/bundles
+re-run Kibana
 ```
